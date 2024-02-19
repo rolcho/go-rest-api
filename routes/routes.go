@@ -10,8 +10,9 @@ func RegisterRoutes(server *gin.Engine) {
 	eventsGroup := server.Group("/events")
 	{
 		eventsGroup.GET("", getEvents)
-		eventsGroup.GET("/:id", getEventById)
+		eventsGroup.GET("/:id", getEvent)
 		eventsGroup.POST("", createEvent)
+		eventsGroup.PUT("/:id", updateEvent)
 	}
 
 }
