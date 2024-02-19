@@ -5,13 +5,18 @@ GET http://localhost:8080/health
 ### Get events
 GET http://localhost:8080/events
 
+
+### Get event by id
+GET http://localhost:8080/events/3
+
+
 ### Set event
 POST http://localhost:8080/events
 Content-Type: application/json
 
 {
-  "Title": "aaaa",
-	"Description": "bbb",
-	"Location": "ccc",
+  "Title": "Concert3",
+	"Description": "Something3",
+	"Location": "Somewhere3",
   "DateTime": "2025-01-01T08:00:00Z"
 }
