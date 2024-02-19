@@ -15,20 +15,20 @@ POST http://localhost:3000/events
 Content-Type: application/json
 
 {
-  "Title": "Concert3",
-	"Description": "Something3",
-	"Location": "Somewhere3",
+  "Title": "Concert2",
+	"Description": "Something2",
+	"Location": "Somewhere2",
   "DateTime": "2025-01-01T08:00:00Z"
 }
 
 
-### Set event
-PUT http://localhost:3000/events/5
+### Update event
+PUT http://localhost:3000/events/2
 Content-Type: application/json
 
 {
-  "Title": "Concert5",
-	"Description": "Something5",
-	"Location": "Somewhere5",
+  "Title": "Concert updated",
+	"Description": "Something updated",
+	"Location": "Somewhere updated",
   "DateTime": "2025-01-01T08:00:00Z"
 }
