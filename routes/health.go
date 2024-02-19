@@ -6,6 +6,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func GetHealth(ctx *gin.Context) {
+func getHealth(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"health": "ok"})
 }

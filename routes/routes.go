@@ -5,7 +5,7 @@ import (
 )
 
 func RegisterRoutes(server *gin.Engine) {
-	server.GET("/health", GetHealth)
+	server.GET("/health", getHealth)
 
 	eventsGroup := server.Group("/events")
 	{
