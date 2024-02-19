@@ -9,11 +9,11 @@ import (
 func main() {
 	server := gin.Default()
 
-	server.GET("/health", getHealt)
+	server.GET("/health", getHealth)
 
 	server.Run(":8080")
 }
 
-func getHealt(ctx *gin.Context) {
+func getHealth(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{"health": "ok"})
 }
