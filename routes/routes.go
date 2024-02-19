@@ -16,4 +16,12 @@ func RegisterRoutes(server *gin.Engine) {
 		eventsGroup.DELETE("/:id", deleteEvent)
 	}
 
+	usersGroup := server.Group("/users")
+	{
+		usersGroup.GET("", getUsers)
+		usersGroup.GET("/:id", getUser)
+		usersGroup.POST("", createUser)
+		usersGroup.PUT("/:id", updateUser)
+		usersGroup.DELETE("/:id", deleteUser)
+	}
 }

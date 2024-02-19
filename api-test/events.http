@@ -1,13 +1,9 @@
-### Test
-GET http://localhost:3000/health
-
-
 ### Get events
 GET http://localhost:3000/events
 
 
 ### Get event by id
-GET http://localhost:3000/events/3
+GET http://localhost:3000/events/2
 
 
 ### Set event
@@ -16,8 +12,8 @@ Content-Type: application/json
 
 {
   "Title": "Concert2",
-	"Description": "Something2",
-	"Location": "Somewhere2",
+	"Description": "Something",
+	"Location": "Somewhere",
   "DateTime": "2025-01-01T08:00:00Z"
 }
 

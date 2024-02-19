@@ -19,7 +19,7 @@ type Event struct {
 
 func (e *Event) Save() error {
 	query := `
-	INSERT INTO events(name, description, location, dateTime, user_id, createdAt, updatedAt)
+	INSERT INTO events(title, description, location, dateTime, user_id, createdAt, updatedAt)
 	VALUES (?, ?, ?, ?, ?, ?, ?)
 	`
 	statement, err := db.DB.Prepare(query)
@@ -88,7 +88,7 @@ func GetEventById(id int64) (*Event, error) {
 func (e *Event) Update() error {
 	query := `
 	UPDATE events
-	SET name = ?, description = ?, location = ?, dateTime = ?, updatedAt = ?
+	SET title = ?, description = ?, location = ?, dateTime = ?, updatedAt = ?
 	WHERE id = ?
 	`
 
