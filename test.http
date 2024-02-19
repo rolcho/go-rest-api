@@ -1,3 +1,16 @@
 ### Test
-
 GET http://localhost:8080/health
+
+
+### Get events
+GET http://localhost:8080/events
+
+### Set event
+POST http://localhost:8080/events
+Content-Type: application/json
+
+{
+  "Title": "aaaa",
+	"Description": "bbb",
+	"Location": "ccc" 
+}
