@@ -1,4 +1,4 @@
-package controllers
+package routes
 
 import (
 	"net/http"
@@ -8,7 +8,7 @@ import (
 	"github.com/rolcho/go-rest-api/models"
 )
 
-func GetEvents(ctx *gin.Context) {
+func getEvents(ctx *gin.Context) {
 	events, err := models.GetAllEvents()
 	if err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": err.Error()})
@@ -18,7 +18,7 @@ func GetEvents(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, events)
 }
 
-func GetEventById(ctx *gin.Context) {
+func getEventById(ctx *gin.Context) {
 	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "Could not find event id"})
@@ -38,7 +38,7 @@ func GetEventById(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, event)
 }
 
-func CreateEvent(ctx *gin.Context) {
+func createEvent(ctx *gin.Context) {
 	var event models.Event
 
 	if err := ctx.ShouldBindJSON(&event); err != nil {
