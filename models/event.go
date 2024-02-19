@@ -12,13 +12,15 @@ type Event struct {
 	Description string    `binding:"required"`
 	Location    string    `binding:"required"`
 	DateTime    time.Time `binding:"required"`
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 	UserId      int
 }
 
 func (e *Event) Save() error {
 	query := `
-	INSERT INTO events(name, description, location, dateTime, user_id)
-	VALUES (?, ?, ?, ?, ?)
+	INSERT INTO events(name, description, location, dateTime, user_id, createdAt, updatedAt)
+	VALUES (?, ?, ?, ?, ?, ?, ?)
 	`
 	statement, err := db.DB.Prepare(query)
 	if err != nil {
@@ -27,7 +29,12 @@ func (e *Event) Save() error {
 
 	defer statement.Close()
 
-	result, err := statement.Exec(e.Title, e.Description, e.Location, e.DateTime, e.UserId)
+	e.CreatedAt = time.Now().Truncate(time.Second)
+	sqlCreatedAt := e.CreatedAt.Format("2006-01-02T15:04:05Z")
+	e.UpdatedAt = time.Now().Truncate(time.Second)
+	sqlUpdatedAt := e.UpdatedAt.Format("2006-01-02T15:04:05Z")
+
+	result, err := statement.Exec(e.Title, e.Description, e.Location, e.DateTime, e.UserId, sqlCreatedAt, sqlUpdatedAt)
 	if err != nil {
 		return err
 	}
@@ -54,7 +61,7 @@ func GetAllEvents() ([]Event, error) {
 	for rows.Next() {
 		var event Event
 		if err := rows.Scan(&event.Id, &event.Title, &event.Description,
-			&event.Location, &event.DateTime, &event.UserId); err != nil {
+			&event.Location, &event.DateTime, &event.CreatedAt, &event.UpdatedAt, &event.UserId); err != nil {
 			return nil, err
 		}
 
@@ -71,7 +78,7 @@ func GetEventById(id int64) (*Event, error) {
 
 	var event Event
 	if err := row.Scan(&event.Id, &event.Title, &event.Description,
-		&event.Location, &event.DateTime, &event.UserId); err != nil {
+		&event.Location, &event.DateTime, &event.CreatedAt, &event.UpdatedAt, &event.UserId); err != nil {
 		return nil, err
 	}
 
@@ -81,7 +88,7 @@ func GetEventById(id int64) (*Event, error) {
 func (e *Event) Update() error {
 	query := `
 	UPDATE events
-	SET name = ?, description = ?, location = ?, dateTime = ?
+	SET name = ?, description = ?, location = ?, dateTime = ?, updatedAt = ?
 	WHERE id = ?
 	`
 
@@ -93,7 +100,29 @@ func (e *Event) Update() error {
 
 	defer statement.Close()
 
-	_, err = statement.Exec(e.Title, e.Description, e.Location, e.DateTime, e.Id)
+	e.UpdatedAt = time.Now().Truncate(time.Second)
+	sqlUpdatedAt := e.UpdatedAt.Format("2006-01-02T15:04:05Z")
+
+	_, err = statement.Exec(e.Title, e.Description, e.Location, e.DateTime, sqlUpdatedAt, e.Id)
+
+	return err
+}
+
+func (e *Event) Delete() error {
+	query := `
+	DELETE FROM events
+	WHERE id = ?
+	`
+
+	statement, err := db.DB.Prepare(query)
+
+	if err != nil {
+		return err
+	}
+
+	defer statement.Close()
+
+	_, err = statement.Exec(e.Id)
 
 	return err
 }

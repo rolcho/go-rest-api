@@ -13,6 +13,7 @@ func RegisterRoutes(server *gin.Engine) {
 		eventsGroup.GET("/:id", getEvent)
 		eventsGroup.POST("", createEvent)
 		eventsGroup.PUT("/:id", updateEvent)
+		eventsGroup.DELETE("/:id", deleteEvent)
 	}
 
 }
