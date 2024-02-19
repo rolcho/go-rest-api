@@ -6,25 +6,31 @@ GET http://localhost:3000/users
 GET http://localhost:3000/users/1
 
 
-### Set user
-POST http://localhost:3000/users
+### Signup user
+POST http://localhost:3000/users/signup
 Content-Type: application/json
 
 {
-  "Title": "Concert2",
-	"Description": "Something",
-	"Location": "Somewhere",
-  "DateTime": "2025-01-01T08:00:00Z"
+  "Name": "Test User",
+	"Email": "test@example.com",
+	"Password": "Password1"
 }
 
-
-### Update user
-PUT http://localhost:3000/users/2
+### Signin user
+POST http://localhost:3000/users/signin
 Content-Type: application/json
 
 {
-  "Title": "Concert updated",
-	"Description": "Something updated",
-	"Location": "Somewhere updated",
-  "DateTime": "2025-01-01T08:00:00Z"
+	"Email": "test@example.com",
+	"Password": "Password1"
+}
+
+### Update user
+PUT http://localhost:3000/users/1
+Content-Type: application/json
+
+{
+  "Name": "Test",
+	"Email": "example@test.com",
+	"Password": "Password1"
 }

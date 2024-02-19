@@ -18,9 +18,10 @@ func RegisterRoutes(server *gin.Engine) {
 
 	usersGroup := server.Group("/users")
 	{
+		usersGroup.POST("/signup", signupUser)
+		usersGroup.POST("/signin", signinUser)
 		usersGroup.GET("", getUsers)
 		usersGroup.GET("/:id", getUser)
-		usersGroup.POST("", createUser)
 		usersGroup.PUT("/:id", updateUser)
 		usersGroup.DELETE("/:id", deleteUser)
 	}

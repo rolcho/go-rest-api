@@ -9,7 +9,7 @@ import (
 
 type User struct {
 	Id        int64
-	Name      string `binding:"required"`
+	Name      string
 	Email     string `binding:"required"`
 	Password  string `binding:"required"`
 	CreatedAt time.Time

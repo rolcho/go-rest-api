@@ -38,7 +38,7 @@ func getUser(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, user)
 }
 
-func createUser(ctx *gin.Context) {
+func signupUser(ctx *gin.Context) {
 	var user models.User
 
 	if err := ctx.ShouldBindJSON(&user); err != nil {
@@ -62,7 +62,29 @@ func createUser(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, gin.H{"message": "user created", "user": &user})
+	ctx.JSON(http.StatusCreated, gin.H{"message": "User created"})
+}
+
+func signinUser(ctx *gin.Context) {
+	var user models.User
+
+	if err := ctx.ShouldBindJSON(&user); err != nil {
+		ctx.JSON(http.StatusBadRequest, gin.H{"message": "Could not parse data"})
+		return
+	}
+
+	userExist, err := models.GetUserByEmail(user.Email)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "Error reading the database"})
+		return
+	}
+
+	if userExist == nil || userExist.Password != user.Password {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "Invalid credentials"})
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, gin.H{"message": "User logged in"})
 }
 
 func updateUser(ctx *gin.Context) {
@@ -93,7 +115,7 @@ func updateUser(ctx *gin.Context) {
 		return
 	}
 
-	if userExist != nil && userExist.Id != userId {
+	if userExist != nil && userExist.Id != updatedUser.Id {
 		ctx.JSON(http.StatusConflict, gin.H{"message": "User already exsist"})
 		return
 	}
