@@ -12,5 +12,6 @@ Content-Type: application/json
 {
   "Title": "aaaa",
 	"Description": "bbb",
-	"Location": "ccc" 
+	"Location": "ccc",
+  "DateTime": "2025-01-01T08:00:00Z"
 }
