@@ -16,6 +16,7 @@ Content-Type: application/json
 	"Password": "Password1"
 }
 
+
 ### Signin user
 POST http://localhost:3000/users/signin
 Content-Type: application/json
@@ -24,6 +25,7 @@ Content-Type: application/json
 	"Email": "test@example.com",
 	"Password": "Password1"
 }
+
 
 ### Update user
 PUT http://localhost:3000/users/1

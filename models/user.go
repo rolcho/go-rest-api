@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/rolcho/go-rest-api/db"
+	"github.com/rolcho/go-rest-api/utils"
 )
 
 type User struct {
@@ -28,12 +29,17 @@ func (u *User) Save() error {
 
 	defer statement.Close()
 
+	hashedPassword, err := utils.HashPassword(u.Password)
+	if err != nil {
+		return err
+	}
+
 	u.CreatedAt = time.Now().Truncate(time.Second)
 	sqlCreatedAt := u.CreatedAt.Format("2006-01-02T15:04:05Z")
 	u.UpdatedAt = time.Now().Truncate(time.Second)
 	sqlUpdatedAt := u.UpdatedAt.Format("2006-01-02T15:04:05Z")
 
-	result, err := statement.Exec(u.Name, u.Email, u.Password, sqlCreatedAt, sqlUpdatedAt)
+	result, err := statement.Exec(u.Name, u.Email, hashedPassword, sqlCreatedAt, sqlUpdatedAt)
 	if err != nil {
 		return err
 	}

@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/rolcho/go-rest-api/models"
+	"github.com/rolcho/go-rest-api/utils"
 )
 
 func getUsers(ctx *gin.Context) {
@@ -58,7 +59,7 @@ func signupUser(ctx *gin.Context) {
 	}
 
 	if err := user.Save(); err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "Error writing the database"})
+		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "Error writing the database " + err.Error()})
 		return
 	}
 
@@ -79,7 +80,12 @@ func signinUser(ctx *gin.Context) {
 		return
 	}
 
-	if userExist == nil || userExist.Password != user.Password {
+	if userExist == nil {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "Invalid credentials"})
+		return
+	}
+
+	if err = utils.VerifyPassword(user.Password, userExist.Password); err != nil {
 		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "Invalid credentials"})
 		return
 	}
