@@ -6,6 +6,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/rolcho/go-rest-api/models"
+	"github.com/rolcho/go-rest-api/utils"
 )
 
 func getEvents(ctx *gin.Context) {
@@ -39,12 +40,27 @@ func getEvent(ctx *gin.Context) {
 }
 
 func createEvent(ctx *gin.Context) {
+	token := ctx.Request.Header.Get("Authorization")
+
+	if token == "" {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "You should login first"})
+		return
+	}
+
+	userId, err := utils.ValidateToken(token)
+	if err != nil {
+		ctx.JSON(http.StatusForbidden, gin.H{"message": "You can't access"})
+		return
+	}
+
 	var event models.Event
 
 	if err := ctx.ShouldBindJSON(&event); err != nil {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "Could not parse data"})
 		return
 	}
+
+	event.UserId = userId
 
 	if err := event.Save(); err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "Error writing the database"})

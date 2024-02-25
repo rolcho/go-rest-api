@@ -75,7 +75,7 @@ func signinUser(ctx *gin.Context) {
 		return
 	}
 
-	ctx.JSON(http.StatusCreated, gin.H{"token": token})
+	ctx.JSON(http.StatusOK, gin.H{"token": token})
 }
 
 func updateUser(ctx *gin.Context) {

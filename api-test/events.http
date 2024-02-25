@@ -9,6 +9,7 @@ GET http://localhost:3000/events/2
 ### Set event
 POST http://localhost:3000/events
 Content-Type: application/json
+Authorization: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jbyIsImV4cCI6MTcwODkwODc1NSwidXNlcklkIjoyfQ.UBEuKPY0POcTdcN2bV_8GQ2EDeKanfocFpTpdLMyj3c"
 
 {
   "Title": "Concert2",
