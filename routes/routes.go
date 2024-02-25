@@ -2,6 +2,7 @@ package routes
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/rolcho/go-rest-api/middlewares"
 )
 
 func RegisterRoutes(server *gin.Engine) {
@@ -9,20 +10,28 @@ func RegisterRoutes(server *gin.Engine) {
 
 	eventsGroup := server.Group("/events")
 	{
-		eventsGroup.GET("", getEvents)
+		eventsGroup.GET("/", getEvents)
 		eventsGroup.GET("/:id", getEvent)
-		eventsGroup.POST("", createEvent)
-		eventsGroup.PUT("/:id", updateEvent)
-		eventsGroup.DELETE("/:id", deleteEvent)
+	}
+
+	protectedEventsGroup := server.Group("/events").Use(middlewares.Authenticate)
+	{
+		protectedEventsGroup.POST("", createEvent)
+		protectedEventsGroup.PUT("/:id", updateEvent)
+		protectedEventsGroup.DELETE("/:id", deleteEvent)
 	}
 
 	usersGroup := server.Group("/users")
 	{
 		usersGroup.POST("/signup", signupUser)
 		usersGroup.POST("/signin", signinUser)
-		usersGroup.GET("", getUsers)
-		usersGroup.GET("/:id", getUser)
-		usersGroup.PUT("/:id", updateUser)
-		usersGroup.DELETE("/:id", deleteUser)
+	}
+
+	protectedUsersGroup := server.Group("/users").Use(middlewares.Authenticate)
+	{
+		protectedUsersGroup.GET("", getUsers)
+		protectedUsersGroup.GET("/:id", getUser)
+		protectedUsersGroup.PUT("/:id", updateUser)
+		protectedUsersGroup.DELETE("/:id", deleteUser)
 	}
 }

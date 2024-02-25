@@ -6,7 +6,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/rolcho/go-rest-api/models"
-	"github.com/rolcho/go-rest-api/utils"
 )
 
 func getEvents(ctx *gin.Context) {
@@ -40,19 +39,6 @@ func getEvent(ctx *gin.Context) {
 }
 
 func createEvent(ctx *gin.Context) {
-	token := ctx.Request.Header.Get("Authorization")
-
-	if token == "" {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "You should login first"})
-		return
-	}
-
-	userId, err := utils.ValidateToken(token)
-	if err != nil {
-		ctx.JSON(http.StatusForbidden, gin.H{"message": "You can't access"})
-		return
-	}
-
 	var event models.Event
 
 	if err := ctx.ShouldBindJSON(&event); err != nil {
@@ -60,7 +46,7 @@ func createEvent(ctx *gin.Context) {
 		return
 	}
 
-	event.UserId = userId
+	event.UserId = ctx.GetInt64("userId")
 
 	if err := event.Save(); err != nil {
 		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "Error writing the database"})
@@ -76,10 +62,16 @@ func updateEvent(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "Could not fetch event id"})
 		return
 	}
-	_, err = models.GetEventById(eventId)
+	event, err := models.GetEventById(eventId)
 
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"message": "Could not fetch event id"})
+		return
+	}
+
+	id := ctx.GetInt64("userId")
+	if event.UserId != id {
+		ctx.JSON(http.StatusForbidden, gin.H{"message": "Not allowed"})
 		return
 	}
 
@@ -110,6 +102,12 @@ func deleteEvent(ctx *gin.Context) {
 	event, err := models.GetEventById(eventId)
 	if err != nil {
 		ctx.JSON(http.StatusNotFound, gin.H{"message": "Could not fetch event id"})
+		return
+	}
+
+	id := ctx.GetInt64("userId")
+	if event.UserId != id {
+		ctx.JSON(http.StatusForbidden, gin.H{"message": "Not allowed"})
 		return
 	}
 

@@ -1,5 +1,6 @@
 ### Get users
 GET http://localhost:3000/users
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jbyIsImV4cCI6MTcwODkwOTMyOCwidXNlcklkIjoxfQ.nGVffnrLhjh9FjCVFfHShNyc9orlWgwu67fnmWaZpKM
 
 
 ### Get user by id
@@ -36,3 +37,8 @@ Content-Type: application/json
 	"Email": "example@test.com",
 	"Password": "Password1"
 }
+
+### Delete user
+DELETE http://localhost:3000/users/3
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jbyIsImV4cCI6MTcwODkwOTMyOCwidXNlcklkIjoxfQ.nGVffnrLhjh9FjCVFfHShNyc9orlWgwu67fnmWaZpKM
+

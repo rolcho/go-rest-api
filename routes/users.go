@@ -126,6 +126,11 @@ func deleteUser(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, gin.H{"message": "Could not fetch user id"})
 		return
 	}
+	id := ctx.GetInt64("userId")
+	if userId != id {
+		ctx.JSON(http.StatusForbidden, gin.H{"message": "Not allowed"})
+		return
+	}
 
 	user, err := models.GetUserById(userId)
 	if err != nil {
