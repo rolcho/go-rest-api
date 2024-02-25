@@ -47,19 +47,8 @@ func signupUser(ctx *gin.Context) {
 		return
 	}
 
-	userExist, err := models.GetUserByEmail(user.Email)
-	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "Error reading the database"})
-		return
-	}
-
-	if userExist != nil {
-		ctx.JSON(http.StatusConflict, gin.H{"message": "User already exsist"})
-		return
-	}
-
 	if err := user.Save(); err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "Error writing the database " + err.Error()})
+		ctx.JSON(http.StatusConflict, gin.H{"message": "Could not create user"})
 		return
 	}
 
@@ -74,23 +63,19 @@ func signinUser(ctx *gin.Context) {
 		return
 	}
 
-	userExist, err := models.GetUserByEmail(user.Email)
+	if err := user.ValidateCredentials(); err != nil {
+		ctx.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
+		return
+	}
+
+	token, err := utils.GenerateToken(user.Email, user.Id)
+
 	if err != nil {
-		ctx.JSON(http.StatusInternalServerError, gin.H{"message": "Error reading the database"})
+		ctx.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
 		return
 	}
 
-	if userExist == nil {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "Invalid credentials"})
-		return
-	}
-
-	if err = utils.VerifyPassword(user.Password, userExist.Password); err != nil {
-		ctx.JSON(http.StatusUnauthorized, gin.H{"message": "Invalid credentials"})
-		return
-	}
-
-	ctx.JSON(http.StatusCreated, gin.H{"message": "User logged in"})
+	ctx.JSON(http.StatusCreated, gin.H{"token": token})
 }
 
 func updateUser(ctx *gin.Context) {

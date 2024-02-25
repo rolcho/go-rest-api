@@ -52,7 +52,7 @@ func (u *User) Save() error {
 
 func GetAllUsers() ([]User, error) {
 	query := `
-	SELECT * FROM users
+	SELECT id, name, email, createdAt, updatedAt FROM users
 	`
 	rows, err := db.DB.Query(query)
 	if err != nil {
@@ -66,7 +66,7 @@ func GetAllUsers() ([]User, error) {
 	for rows.Next() {
 		var user User
 		if err := rows.Scan(&user.Id, &user.Name, &user.Email,
-			&user.Password, &user.CreatedAt, &user.UpdatedAt); err != nil {
+			&user.CreatedAt, &user.UpdatedAt); err != nil {
 			return nil, err
 		}
 
@@ -77,13 +77,13 @@ func GetAllUsers() ([]User, error) {
 
 func GetUserById(id int64) (*User, error) {
 	query := `
-	SELECT * FROM users WHERE id = ?
+	SELECT id, name, email, createdAt, updatedAt FROM users WHERE id = ?
 	`
 	row := db.DB.QueryRow(query, id)
 
 	var user User
 	if err := row.Scan(&user.Id, &user.Name, &user.Email,
-		&user.Password, &user.CreatedAt, &user.UpdatedAt); err != nil {
+		&user.CreatedAt, &user.UpdatedAt); err != nil {
 		return nil, err
 	}
 
@@ -92,13 +92,13 @@ func GetUserById(id int64) (*User, error) {
 
 func GetUserByEmail(email string) (*User, error) {
 	query := `
-	SELECT * FROM users WHERE email = ?
+	SELECT id, name, email, createdAt, updatedAt FROM users WHERE email = ?
 	`
 	row := db.DB.QueryRow(query, email)
 
 	var user User
 	if err := row.Scan(&user.Id, &user.Name, &user.Email,
-		&user.Password, &user.CreatedAt, &user.UpdatedAt); err != nil {
+		&user.CreatedAt, &user.UpdatedAt); err != nil {
 		if err == sql.ErrNoRows {
 			return nil, nil
 		}
@@ -148,4 +148,16 @@ func (u *User) Delete() error {
 	_, err = statement.Exec(u.Id)
 
 	return err
+}
+
+func (u *User) ValidateCredentials() error {
+	var password string
+	query := `
+	SELECT id, password FROM users WHERE email = ?
+	`
+	row := db.DB.QueryRow(query, u.Email)
+	if err := row.Scan(&u.Id, &password); err != nil {
+		return err
+	}
+	return utils.VerifyPassword(u.Password, password)
 }
