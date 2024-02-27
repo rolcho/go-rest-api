@@ -9,7 +9,7 @@ GET http://localhost:3000/events/2
 ### Set event
 POST http://localhost:3000/events
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jbyIsImV4cCI6MTcwODkwOTMyOCwidXNlcklkIjoxfQ.nGVffnrLhjh9FjCVFfHShNyc9orlWgwu67fnmWaZpKM
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jbyIsImV4cCI6MTcwOTA2MjI2MiwidXNlcklkIjoxfQ.U8pFEW8VsvkJ7KUI4xcOhWg9DknJ3lKrVmvdBrlRb4A
 
 {
   "Title": "Concert2",
@@ -22,7 +22,7 @@ Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBs
 ### Update event
 PUT http://localhost:3000/events/2
 Content-Type: application/json
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jbyIsImV4cCI6MTcwODkwOTMyOCwidXNlcklkIjoxfQ.nGVffnrLhjh9FjCVFfHShNyc9orlWgwu67fnmWaZpKM
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jbyIsImV4cCI6MTcwOTA2MjI2MiwidXNlcklkIjoxfQ.U8pFEW8VsvkJ7KUI4xcOhWg9DknJ3lKrVmvdBrlRb4A
 
 {
   "Title": "Concert updated",
