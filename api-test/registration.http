@@ -1,0 +1,8 @@
+### Registration for event
+POST http://localhost:3000/events/1/register
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJleHAiOjE3MDkwNjIzOTEsInVzZXJJZCI6Mn0.tTCxi96cnxfFy31RNFIpos_tqNWoDpWwdf4H6m0YXWg
+
+
+### Cancel registration
+DELETE http://localhost:3000/events/1/register
+Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZXhhbXBsZS5jb20iLCJleHAiOjE3MDkwNjIzOTEsInVzZXJJZCI6Mn0.tTCxi96cnxfFy31RNFIpos_tqNWoDpWwdf4H6m0YXWg
